@@ -8,6 +8,8 @@ inputs:
 outputs:
   time:
     description: "The time we greeted you"
+  recommendations:
+    description: "Outputs the recommendation issues list"
 runs:
   using: "node16"
   main: "actions/index.js"

@@ -9801,15 +9801,31 @@ async function run() {
 		const payload = JSON.stringify(github.context.payload, undefined, 2);
 		console.log(`The event payload: ${payload}`);
 
-		const baseURL =
-			"https://api.github.com/search/issues?q=is:open+issue+label:good-first-issue+bug";
+		const baseURL = "https://api.github.com/search/issues?q=";
 		const is = "open issue".replace(" ", "+");
-		const label = "good-first-issues bug".replace(" ", "+");
-		const languages = github.context.payload.pull_request.base.repo.language;
-		const searchQuery = `is:${is}+label:${label}+language:${languages}`;
+		const label = "good-first-issue bug".replace(" ", "+");
+		const language =
+			github.context.payload.pull_request.base.repo.language.toLowerCase();
+		const searchQuery = `is:${is}+label:${label}+language:${language}`;
 
-		console.log(`language: ${languages} and type is ${typeof languages}`);
-		console.log(`searchQuery ${searchQuery}`);
+		const issueResponse = await fetch(baseURL + searchQuery);
+
+		const recommendedIssues = [];
+
+		if (issueResponse.status == 200) {
+			const issueResponseData = await issueResponse.json();
+			issueResponseData.items.slice(0, 5).forEach((element) => {
+				recommendedIssues.push({
+					url: element.html_url,
+					title: element.title,
+					labels: element.labels.map((element) => element.name),
+					state: element.state,
+					description: element.body.substring(0, 99) + "...",
+				});
+			});
+		}
+		console.log(recommendedIssues);
+		core.setOutput("recommendations", JSON.stringify(recommendedIssues));
 	} catch (error) {
 		core.setFailed(error.message);
 	}
