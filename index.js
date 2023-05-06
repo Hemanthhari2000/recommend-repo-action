@@ -1,5 +1,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
+const { default: axios } = require("axios");
 
 async function run() {
 	try {
@@ -17,13 +18,12 @@ async function run() {
 			github.context.payload.pull_request.base.repo.language.toLowerCase();
 		const searchQuery = `is:${is}+label:${label}+language:${language}`;
 
-		const issueResponse = await fetch(baseURL + searchQuery);
+		const issueResponse = await axios.get(baseURL + searchQuery);
 
 		const recommendedIssues = [];
 
 		if (issueResponse.status == 200) {
-			const issueResponseData = await issueResponse.json();
-			issueResponseData.items.slice(0, 5).forEach((element) => {
+			issueResponse.data.items.slice(0, 5).forEach((element) => {
 				recommendedIssues.push({
 					url: element.html_url,
 					title: element.title,
