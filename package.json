@@ -1,0 +1,13 @@
+{
+  "name": "recommend-repo-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Hemanthhari2000/recommend-repo-action.git",
+  "author": "Hemanth <hemanthhari2000@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^5.1.1"
+  }
+}
