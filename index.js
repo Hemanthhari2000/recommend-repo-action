@@ -4,13 +4,6 @@ const { default: axios } = require("axios");
 
 async function run() {
 	try {
-		const nameToGreet = core.getInput("who-to-greet");
-		console.log(`Hello ${nameToGreet}!`);
-		const time = new Date().toTimeString();
-		core.setOutput("time", time);
-		const payload = JSON.stringify(github.context.payload, undefined, 2);
-		console.log(`The event payload: ${payload}`);
-
 		const baseURL = "https://api.github.com/search/issues?q=";
 		const is = "open issue".replace(" ", "+");
 		const label = "good-first-issue bug".replace(" ", "+");
@@ -33,8 +26,11 @@ async function run() {
 				});
 			});
 		}
-		console.log(recommendedIssues);
-		core.setOutput("recommendations", JSON.stringify(recommendedIssues));
+		console.log(`Recommendations:  ${recommendedIssues}`);
+		core.setOutput(
+			"recommendations",
+			JSON.stringify(recommendedIssues, undefined, 2)
+		);
 	} catch (error) {
 		core.setFailed(error.message);
 	}

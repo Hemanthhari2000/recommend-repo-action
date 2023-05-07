@@ -1,15 +1,8 @@
-name: "Hello World"
-description: "Greet someone and record the time"
-inputs:
-  who-to-greet:
-    description: "Who to greet"
-    required: true
-    default: "World"
+name: "Recommend Repo Action"
+description: "Recommends Github repos based on similar pull request"
 outputs:
-  time:
-    description: "The time we greeted you"
   recommendations:
-    description: "Outputs the recommendation issues list"
+    description: "Outputs the recommendation issues list to user"
 runs:
   using: "node16"
   main: "actions/index.js"
