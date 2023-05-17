@@ -16347,11 +16347,11 @@ async function run() {
 		const searchQuery = `is:${is}+label:${label}+language:${language}`;
 
 		const issueResponse = await axios.get(baseURL + searchQuery);
-		
+
 		const recommendedIssues = [];
 		if (issueResponse.status == 200) {
 			issueResponse.data.items.slice(0, 5).forEach((element) => {
-				const { githubUser, githubRepo } = getUserAndRepoForTheURL(
+				const { user: githubUser, repo: githubRepo } = getUserAndRepoForTheURL(
 					element.html_url
 				);
 				recommendedIssues.push(
@@ -16362,7 +16362,8 @@ async function run() {
 		console.log(`Recommendations:  ${recommendedIssues}`);
 		core.setOutput(
 			"recommendations",
-			JSON.stringify(recommendedIssues, undefined, 2)
+			// JSON.stringify(recommendedIssues, undefined, 2)
+			recommendedIssues.join("\n")
 		);
 	} catch (error) {
 		core.setFailed(error.message);
